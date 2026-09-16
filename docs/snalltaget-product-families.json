@@ -1,0 +1,240 @@
+[
+  {
+    "travelClass": "FIRST",
+    "comfortClass": "STANDARD",
+    "flexLevel": "FULL_FLEXIBLE",
+    "id": "FCPCFF",
+    "name": "1. Klasse Privates Abteil Sitzplatz",
+    "code": "FCPCFF"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "SEMI_FLEXIBLE",
+    "id": "SPPCSF",
+    "name": "Privates Abteil Sitzplatz",
+    "code": "SPPCSF"
+  },
+  {
+    "travelClass": "FIRST",
+    "comfortClass": "STANDARD",
+    "flexLevel": "NON_FLEXIBLE",
+    "id": "FCSNF",
+    "name": "1. Klasse Sitzplatz",
+    "code": "FCSNF"
+  },
+  {
+    "travelClass": "FIRST",
+    "comfortClass": "STANDARD",
+    "flexLevel": "SEMI_FLEXIBLE",
+    "id": "FCPCSF",
+    "name": "1. Klasse Privates Abteil Sitzplatz",
+    "code": "FCPCSF"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "NON_FLEXIBLE",
+    "id": "SPNF",
+    "name": "Sitzplatz",
+    "code": "SPNF",
+    "description": "Seat, non flex"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "HIGH",
+    "flexLevel": "NON_FLEXIBLE",
+    "id": "NTPCCNF",
+    "name": "Privates Abteil Komfort",
+    "code": "NTPCCNF"
+  },
+  {
+    "travelClass": "FIRST",
+    "comfortClass": "STANDARD",
+    "flexLevel": "NON_FLEXIBLE",
+    "id": "FCSCNF",
+    "name": "1. Klasse Sitzplatz im Abteil",
+    "code": "FCSCNF"
+  },
+  {
+    "id": "PET",
+    "name": "Reise mit Haustier",
+    "code": "PET"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "FULL_FLEXIBLE",
+    "id": "NTPCFF",
+    "name": "Privates Abteil",
+    "code": "NTPCFF",
+    "description": "Night train private compartment full flexible"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "NON_FLEXIBLE",
+    "id": "SPSCNF",
+    "name": "Sitzplatz im Abteil",
+    "code": "SPSCNF",
+    "description": "Seat in compartment, non-flex"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "NON_FLEXIBLE",
+    "id": "NTBNF",
+    "name": "Liegeplatz im gemischten Gemeinschaftsabteil",
+    "code": "NTBNF",
+    "description": "Berth in shared compartment, non-flex"
+  },
+  {
+    "travelClass": "FIRST",
+    "comfortClass": "STANDARD",
+    "flexLevel": "FULL_FLEXIBLE",
+    "id": "FCSFF",
+    "name": "1. Klasse Sitzplatz",
+    "code": "FCSFF"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "HIGH",
+    "flexLevel": "FULL_FLEXIBLE",
+    "id": "NTPCCFF",
+    "name": "Privates Abteil Komfort",
+    "code": "NTPCCFF"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "FULL_FLEXIBLE",
+    "id": "NTBFF",
+    "name": "Liegeplatz im gemischten Gemeinschaftsabteil",
+    "code": "NTBFF",
+    "description": "Berth in mixed shared compartment, full flex"
+  },
+  {
+    "travelClass": "FIRST",
+    "comfortClass": "STANDARD",
+    "flexLevel": "SEMI_FLEXIBLE",
+    "id": "FCSSF",
+    "name": "1. Klasse Sitzplatz",
+    "code": "FCSSF"
+  },
+  {
+    "id": "NTPCE",
+    "name": "Zusätzlicher Fahrgast Privates Abteil",
+    "code": "NTPCE"
+  },
+  {
+    "travelClass": "FIRST",
+    "comfortClass": "STANDARD",
+    "flexLevel": "FULL_FLEXIBLE",
+    "id": "FCSCFF",
+    "name": "1. Klasse Sitzplatz im Abteil",
+    "code": "FCSCFF"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "HIGH",
+    "flexLevel": "SEMI_FLEXIBLE",
+    "id": "NTPCCSF",
+    "name": "Privates Abteil Komfort",
+    "code": "NTPCCSF"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "NON_FLEXIBLE",
+    "id": "NTPCNF",
+    "name": "Privates Abteil",
+    "code": "NTPCNF",
+    "description": "Night train Private Compartment non-flex"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "NON_FLEXIBLE",
+    "id": "SPPCNF",
+    "name": "Privates Abteil Sitzplatz",
+    "code": "SPPCNF"
+  },
+  {
+    "travelClass": "FIRST",
+    "comfortClass": "STANDARD",
+    "flexLevel": "NON_FLEXIBLE",
+    "id": "FCPCNF",
+    "name": "1. Klasse Privates Abteil Sitzplatz",
+    "code": "FCPCNF"
+  },
+  {
+    "travelClass": "FIRST",
+    "comfortClass": "STANDARD",
+    "flexLevel": "SEMI_FLEXIBLE",
+    "id": "FCSCSF",
+    "name": "1. Klasse Sitzplatz im Abteil",
+    "code": "FCSCSF"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "SEMI_FLEXIBLE",
+    "id": "NTBSF",
+    "name": "Liegeplatz im gemischten Gemeinschaftsabteil",
+    "code": "NTBSF",
+    "description": "Berth in shared compartment, rebookable"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "FULL_FLEXIBLE",
+    "id": "SPFF",
+    "name": "Sitzplatz",
+    "code": "SPFF",
+    "description": "Seat, full flex"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "FULL_FLEXIBLE",
+    "id": "SPSCFF",
+    "name": "Sitzplatz im Abteil",
+    "code": "SPSCFF",
+    "description": "Seat in compartment, full flex"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "SEMI_FLEXIBLE",
+    "id": "SPSCSF",
+    "name": "Sitzplatz im Abteil",
+    "code": "SPSCSF",
+    "description": "Seat in shared compartment, rebookable"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "SEMI_FLEXIBLE",
+    "id": "SPSF",
+    "name": "Sitzplatz",
+    "code": "SPSF",
+    "description": "Seat, rebookable"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "FULL_FLEXIBLE",
+    "id": "SPPCFF",
+    "name": "Privates Abteil Sitzplatz",
+    "code": "SPPCFF"
+  },
+  {
+    "travelClass": "SECOND",
+    "comfortClass": "STANDARD",
+    "flexLevel": "SEMI_FLEXIBLE",
+    "id": "NTPCSF",
+    "name": "Privates Abteil",
+    "code": "NTPCSF",
+    "description": "Private Compartment rebookable"
+  }
+]

@@ -1,0 +1,1 @@
+"""nighttrain-monitor shared library."""

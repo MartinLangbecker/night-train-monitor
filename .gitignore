@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Collected data (not versioned, see README)
+data/
+
+# Generated visualizations
+charts/
+
+# Logs
+*.log
+
+# Editor
+*.swp
+*~
+
+# Env
+.env
+
+# Local notes
+*.local.md
