@@ -165,3 +165,25 @@ Falls API geschlossen: im Vortrag erwähnen ("war offen bis X, wurde zwischen Y 
   - Erstmals zwei Saisons gleichzeitig freigegeben
   - Scraper-Window von 183 auf 365 Tage erweitert
 - **27.08.** Neue Route angekündigt: Brussels/Amsterdam → Copenhagen/Malmö (ab April 2028, mit RDC, 3×/Woche)
+
+---
+
+# NOX Mobility 1791/1790 — Beobachtungs-Timeline
+
+Nachtzug-Startup, eine Route: Hamburg ↔ München (via Bremen, Augsburg). Saison 2027-03-23 – 2027-12-10, ~6 Tage/Woche. Öffentliche REST-API (`api.noxmobility.com`), Kapazität direkt sichtbar (`availability.available`) — kein Tier-Scanning nötig.
+
+## September 2026
+
+- **23.09.** Verkaufsstart und Beginn des Scrapings **ab Tag 1** — seltener Glücksfall: die volle Fill-Kurve ab Verkaufsöffnung wird erfasst (bei allen anderen Providern begann die Erhebung mitten im Verkauf, Start-Kapazität verzerrt).
+  - Auslöser: **InnoTrans 2026** (Berlin, läuft aktuell) — NOX präsentiert sich dort, der Verkaufsstart wurde zur Messe angekündigt.
+  - `nox_availability.py` gebaut und in `run-all.sh` verdrahtet (2 Richtungen, `--days 445` erreicht das Saisonende). Loader in `lib/loaders.py` (`capacity = available`, exakt).
+  - **Ausgangslage NICHT leer:** erster Snapshot zeigt bereits spürbare Buchungen, v.a. auf den ersten Fahrten. Beispiele (HH→M, Zug 1791): 23.03. **19/58**, 24.03. (M→HH, 1790) **41/58**, spätere Frühjahrstage 48–55/58; ab ca. Juli durchgehend `116/116` (größere/leere Konfiguration).
+  - Erklärung: Verkaufsstart wurde angekündigt, und die allerersten Fahrten neuer Züge sind erfahrungsgemäß besonders beliebt (Enthusiasten/Erstfahrer). Die frühe Nachfrage konzentriert sich daher auf die Saison-Anfangstage.
+  - **`total` variiert** (58 vs. 116 je nach Datum) — Wagenkonfiguration/Kontingent datumsabhängig, wird pro Snapshot mitgeschrieben (nicht als Konstante angenommen).
+  - Neu entdeckter API-Constraint: `fare-calendar` lehnt Zeitfenster > 62 Tage mit HTTP 400 ab (Scraper chunked in ≤62-Tage-Blöcken).
+
+## Offene Fragen
+
+- Wie schnell füllen sich die Saison-Anfangstage (23.–28.03.) relativ zum Rest? (Erste eigene Fill-Kurve ab Tag 1 verfügbar.)
+- Bleibt `total` bei 58 im Frühjahr und 116 ab Sommer, oder ändert sich die Konfiguration weiter?
+- Kommt eine dynamische Preiskomponente stärker durch, sobald die Auslastung steigt? (Bisher grobstufig: 50/58 → 107 €, leer → 65 €.)
