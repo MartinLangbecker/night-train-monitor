@@ -145,6 +145,7 @@ Runs daily at 00:00 via `bin/run-all.sh`:
 | Snälltåget | 10 routes (4 pairs + Nordlicht) | SEK | 120 days | REST /orientation/calendar + searchjourney |
 | RDC EuroNight | 2 routes (Hamburg ↔ Stockholm) | EUR | 120 days | GraphQL ReadPriceCategories + tier scan |
 | SJ | 8 routes (4 pairs × 2 dir) | SEK | 120 days | REST /search + /offers, adaptive n=1..9 probing |
+| NOX Mobility | 2 routes (1 pair × 2 dir) | EUR | 445 days | REST /fare-calendar (≤62-day chunks) + /search |
 
 Filenames: `YYYYMMDD_route.json` (LEO adds `-czk`/`-eur` suffix)
 
@@ -205,6 +206,13 @@ See [docs/predictions.md](docs/predictions.md) for full algorithm documentation.
 - Adaptive tier probing via multi-passenger search (n=1→9)
 - See: [docs/sj.md](docs/sj.md)
 
+### NOX Mobility (1791/1790)
+- Hamburg – Bremen – Augsburg – München (single route, overnight)
+- German startup, season 2027-03-23 – 2027-12-10, ~6 days/week
+- 2 tariff classes: Basic, Flex
+- **Real remaining capacity exposed directly** (`availability.available`) — no tier scanning needed, unlike LEO/RDC/SJ
+- See: [docs/nox.md](docs/nox.md)
+
 ## Performance
 
 All scrapers use `http.client.HTTPSConnection` with keep-alive for persistent TLS
@@ -226,6 +234,7 @@ connection drop (retry once).
 - [European Sleeper Details](docs/european-sleeper.md) — schedule, pass analysis, fares
 - [RDC EuroNight](docs/rdc.md) — GraphQL API, tier scanning, wagon formation
 - [SJ Night Trains](docs/sj.md) — REST API, adaptive tier probing, accommodation types
+- [NOX Mobility](docs/nox.md) — REST API, direct capacity, Hamburg↔München
 - [Snälltåget](docs/snalltaget.md) — REST API, routes, product families, NTB finding
 - [Pricing Model](docs/pricing-model.md) — tier mechanics, capacity thresholds, surcharges
 - [Timeline](docs/timeline.md) — chronological change log
