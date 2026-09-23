@@ -179,7 +179,7 @@ Nachtzug-Startup, eine Route: Hamburg ↔ München (via Bremen, Augsburg). Saiso
   - `nox_availability.py` gebaut und in `run-all.sh` verdrahtet (2 Richtungen, `--days 445` erreicht das Saisonende). Loader in `lib/loaders.py` (`capacity = available`, exakt).
   - **Ausgangslage NICHT leer:** erster Snapshot zeigt bereits spürbare Buchungen, v.a. auf den ersten Fahrten. Beispiele (HH→M, Zug 1791): 23.03. **19/58**, 24.03. (M→HH, 1790) **41/58**, spätere Frühjahrstage 48–55/58; ab ca. Juli durchgehend `116/116` (größere/leere Konfiguration).
   - Erklärung: Verkaufsstart wurde angekündigt, und die allerersten Fahrten neuer Züge sind erfahrungsgemäß besonders beliebt (Enthusiasten/Erstfahrer). Die frühe Nachfrage konzentriert sich daher auf die Saison-Anfangstage.
-  - **`total` variiert** (58 vs. 116 je nach Datum) — Wagenkonfiguration/Kontingent datumsabhängig, wird pro Snapshot mitgeschrieben (nicht als Konstante angenommen).
+  - **`total`: 58 → 116 = Verdopplung ab ~14./15.04.2027.** Die ersten ~3 Wochen (23.03.–13.04., 9–10 Tage) fahren mit halber Kapazität (`total=58`, vermutlich 1 Wagen/Einheit à 58 Plätzen); ab Mitte April durchgehend `total=116` = 2×58 (2 Wagen/Einheiten) bis Saisonende. Die Verdopplung ist bereits im ersten Snapshot hinterlegt, keine spätere Ad-hoc-Erhöhung. Fill-Kurven daher immer gegen den per-Snapshot-`total` normalisieren — die 58er-Anfangstage sind kapazitätslimitiert.
   - Neu entdeckter API-Constraint: `fare-calendar` lehnt Zeitfenster > 62 Tage mit HTTP 400 ab (Scraper chunked in ≤62-Tage-Blöcken).
 
 ## Offene Fragen
