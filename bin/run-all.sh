@@ -10,11 +10,13 @@ LEO_DATA="$BASE/data/leo"
 ES_DATA="$BASE/data/es"
 SNA_DATA="$BASE/data/snalltaget"
 RDC_DATA="$BASE/data/rdc"
+NOX_DATA="$BASE/data/nox"
 
 log_leo() { echo "[$NOW] $1" >> "$LEO_DATA/cron.log"; }
 log_es()  { echo "[$NOW] $1" >> "$ES_DATA/cron.log"; }
 log_sna() { echo "[$NOW] $1" >> "$SNA_DATA/cron.log"; }
 log_rdc() { echo "[$NOW] $1" >> "$RDC_DATA/cron.log"; }
+log_nox() { echo "[$NOW] $1" >> "$NOX_DATA/cron.log"; }
 
 # Generic runner: run LOGFILE LOGFN DESC CMD...
 run() {
@@ -94,6 +96,13 @@ run "$SJ_DATA/cron.log" log_sj "stockholm-umea"   "$SCRAPERS/sj_availability.py"
 run "$SJ_DATA/cron.log" log_sj "stockholm-lulea"  "$SCRAPERS/sj_availability.py" 740000001 740000190 --days 120 -q -o "$SJ_DATA" &
 wait  # all 4 SJ routes finish before continuing
 
+# NOX Mobility (1 route, 2 directions) — Hamburg <-> München
+# Season 2027-03-23..2027-12-10, ~6 days/week. --days 445 reaches season end.
+log_nox "=== Start run-all ==="
+cd "$BASE"
+run "$NOX_DATA/cron.log" log_nox "hamburg-muenchen" "$SCRAPERS/nox_availability.py" aa8c46ab-660f-4a1d-9422-1dd1d1d8e045 9fb61762-46bf-462f-9e1a-a859d96a87ac --days 445 -q -o "$NOX_DATA"
+run "$NOX_DATA/cron.log" log_nox "muenchen-hamburg" "$SCRAPERS/nox_availability.py" 9fb61762-46bf-462f-9e1a-a859d96a87ac aa8c46ab-660f-4a1d-9422-1dd1d1d8e045 --days 445 -q -o "$NOX_DATA"
+
 # Analyze: validate predictions + generate new ones
 cd "$BASE"
 run "$LEO_DATA/cron.log" log_leo "analyze" bin/analyze.py --mode predict -q
@@ -103,3 +112,4 @@ log_es  "=== End run-all ==="
 log_sna "=== End run-all ==="
 log_rdc "=== End run-all ==="
 log_sj  "=== End run-all ==="
+log_nox "=== End run-all ==="

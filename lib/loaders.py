@@ -1,7 +1,7 @@
 """
 Snapshot loading and file discovery for all operators.
 
-Supported providers: es, leo, snalltaget, rdc, sj
+Supported providers: es, leo, snalltaget, rdc, sj, nox
 
 All loaders return a unified format:
   {travel_date: {class_name: {'capacity': int|None, 'price': float}}}
@@ -83,13 +83,21 @@ def get_all_routes():
             if name not in ('cron',):
                 routes.add(('sj', name))
 
+    # NOX routes
+    nox_dir = get_data_dir('nox')
+    if os.path.isdir(nox_dir):
+        for f in glob.glob(os.path.join(nox_dir, '*.json')):
+            name = os.path.basename(f)[9:].replace('.json', '')
+            if name not in ('cron',):
+                routes.add(('nox', name))
+
     return sorted(routes)
 
 
 def get_all_routes_all_currencies():
     """Like get_all_routes but includes CZK variants for LEO."""
     routes = set()
-    for provider in ('es', 'leo', 'snalltaget', 'rdc', 'sj'):
+    for provider in ('es', 'leo', 'snalltaget', 'rdc', 'sj', 'nox'):
         data_dir = get_data_dir(provider)
         if not os.path.isdir(data_dir):
             continue
@@ -342,6 +350,38 @@ def load_sj_snapshot(filepath):
     return result
 
 
+def load_nox_snapshot(filepath):
+    """
+    Load NOX Mobility snapshot file.
+
+    NOX exposes real remaining capacity directly (availability.available), so
+    capacity is exact — no tier reconstruction needed.
+
+    Returns: {travel_date: {class_name: {'capacity': int|None, 'price': float}}}
+    """
+    with open(filepath) as f:
+        raw = json.load(f)
+
+    result = {}
+    for dt, entry in raw.items():
+        if not isinstance(entry, dict):
+            continue
+        if '__error__' in entry:
+            result[dt] = {ERROR_KEY: entry['__error__']}
+            continue
+        if 'info' in entry:
+            continue  # "no service"
+        available = entry.get('available')
+        classes = {}
+        for cls in entry.get('classes', []):
+            price = cls.get('price')
+            if price is not None:
+                classes[cls['type']] = {'capacity': available, 'price': price}
+        if classes:
+            result[dt] = classes
+    return result
+
+
 def load_snapshot(provider, filepath):
     """Load a snapshot file using the appropriate provider loader."""
     if provider == 'es':
@@ -352,6 +392,8 @@ def load_snapshot(provider, filepath):
         return load_rdc_snapshot(filepath)
     elif provider == 'sj':
         return load_sj_snapshot(filepath)
+    elif provider == 'nox':
+        return load_nox_snapshot(filepath)
     else:
         return load_leo_snapshot(filepath)
 
