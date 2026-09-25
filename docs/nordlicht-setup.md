@@ -3,8 +3,8 @@
 ## Dateien auf den Pi kopieren
 
 ```bash
-scp -i ~/.ssh/pi-raspberry scrapers/snalltaget_nordlicht.py pi@192.168.16.16:~/Projects/nighttrain-monitor/scrapers/
-scp -i ~/.ssh/pi-raspberry bin/run-nordlicht.sh pi@192.168.16.16:~/Projects/nighttrain-monitor/bin/
+scp -i ~/.ssh/pi-raspberry scrapers/snalltaget_nordlicht.py pi@192.168.16.16:~/Projects/night-train-monitor/scrapers/
+scp -i ~/.ssh/pi-raspberry bin/run-nordlicht.sh pi@192.168.16.16:~/Projects/night-train-monitor/bin/
 ```
 
 ## Auf dem Pi
@@ -13,26 +13,26 @@ scp -i ~/.ssh/pi-raspberry bin/run-nordlicht.sh pi@192.168.16.16:~/Projects/nigh
 ssh -i ~/.ssh/pi-raspberry pi@192.168.16.16
 
 # Executable machen
-chmod +x ~/Projects/nighttrain-monitor/bin/run-nordlicht.sh
+chmod +x ~/Projects/night-train-monitor/bin/run-nordlicht.sh
 
 # Testlauf
-cd ~/Projects/nighttrain-monitor
+cd ~/Projects/night-train-monitor
 python3 scrapers/snalltaget_nordlicht.py
 
 # Cron-Job einrichten (20 min nach dem Hauptlauf)
 crontab -e
 # Einfügen:
-20 0 * * * ~/Projects/nighttrain-monitor/bin/run-nordlicht.sh
+20 0 * * * ~/Projects/night-train-monitor/bin/run-nordlicht.sh
 ```
 
 ## Prüfen
 
 ```bash
 # Log checken
-tail -5 ~/Projects/nighttrain-monitor/data/snalltaget/cron.log
+tail -5 ~/Projects/night-train-monitor/data/snalltaget/cron.log
 
 # Output checken
-ls -la ~/Projects/nighttrain-monitor/data/snalltaget/*narvik*
+ls -la ~/Projects/night-train-monitor/data/snalltaget/*narvik*
 ```
 
 ## Nach dem 27. November entfernen
@@ -45,8 +45,8 @@ crontab -e
 # Zeile mit run-nordlicht.sh entfernen
 
 # Optional: Dateien aufräumen (Daten behalten, Skripte löschen)
-rm ~/Projects/nighttrain-monitor/bin/run-nordlicht.sh
-rm ~/Projects/nighttrain-monitor/scrapers/snalltaget_nordlicht.py
+rm ~/Projects/night-train-monitor/bin/run-nordlicht.sh
+rm ~/Projects/night-train-monitor/scrapers/snalltaget_nordlicht.py
 ```
 
 ## Hinweise

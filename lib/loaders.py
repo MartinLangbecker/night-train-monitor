@@ -16,7 +16,7 @@ from datetime import datetime
 # === Path Configuration ===
 
 def get_base_dir():
-    """Get the nighttrain-monitor base directory."""
+    """Get the night-train-monitor base directory."""
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 

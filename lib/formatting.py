@@ -1,5 +1,5 @@
 """
-Output formatting helpers for nighttrain-monitor.
+Output formatting helpers for night-train-monitor.
 """
 
 from datetime import datetime, date

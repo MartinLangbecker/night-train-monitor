@@ -3,13 +3,13 @@
 # Separate cron job: auto-stops after 2026-11-27
 #
 # Cron entry (daily at 00:20, after run-all.sh):
-#   20 0 * * * ~/Projects/nighttrain-monitor/bin/run-nordlicht.sh
+#   20 0 * * * ~/Projects/night-train-monitor/bin/run-nordlicht.sh
 #
 # Auto-stops after Nov 27 (no-op if date > 2026-11-27)
 
 TODAY=$(date +%Y%m%d)
 NOW=$(date '+%Y-%m-%d %H:%M:%S')
-BASE=~/Projects/nighttrain-monitor
+BASE=~/Projects/night-train-monitor
 SNA_DATA="$BASE/data/snalltaget"
 
 # Stop after the inbound travel date

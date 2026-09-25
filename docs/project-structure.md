@@ -1,7 +1,7 @@
 # Project Structure
 
 ```
-nighttrain-monitor/
+night-train-monitor/
 ├── bin/
 │   ├── analyze.py              Unified analysis (anomaly + forecast + predictions)
 │   ├── run-all.sh              Cron entry: daily data collection

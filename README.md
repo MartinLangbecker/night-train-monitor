@@ -1,4 +1,4 @@
-# Nighttrain Monitor
+# Night Train Monitor
 
 Automated price and availability tracking for European night trains (Leo Express, European Sleeper, Snälltåget, RDC EuroNight, SJ).
 Daily snapshots, anomaly detection, sellout forecasting, booking recommendations.

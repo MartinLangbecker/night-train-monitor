@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SJ availability scraper for nighttrain-monitor.
+"""SJ availability scraper for night-train-monitor.
 
 Scans SJ night train routes with iterative binary search tier probing.
 

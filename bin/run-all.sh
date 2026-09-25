@@ -4,7 +4,7 @@
 
 TODAY=$(date +%Y%m%d)
 NOW=$(date '+%Y-%m-%d %H:%M:%S')
-BASE=~/Projects/nighttrain-monitor
+BASE=~/Projects/night-train-monitor
 SCRAPERS="$BASE/scrapers"
 LEO_DATA="$BASE/data/leo"
 ES_DATA="$BASE/data/es"

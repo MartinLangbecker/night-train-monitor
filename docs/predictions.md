@@ -153,7 +153,7 @@ Alle Varianten: 0% Binary Accuracy (kein einziger Sellout im Testzeitraum).
 ### Backtest wiederholen
 
 ```bash
-cd ~/Projects/nighttrain-monitor
+cd ~/Projects/night-train-monitor
 
 # Dry run (Default): spielt alle Snapshots chronologisch durch und scored,
 # schreibt aber NICHTS. Startet immer bei leerem Zustand.
