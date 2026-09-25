@@ -16,6 +16,7 @@ charts/
 # Editor
 *.swp
 *~
+.idea/
 
 # Env
 .env
