@@ -70,7 +70,7 @@ run "$ES_DATA/cron.log" log_es "last-minute-deals" "$SCRAPERS/es_last_minute.py"
 run "$ES_DATA/cron.log" log_es "flash-sale" "$SCRAPERS/es_flash_sale.py" -q -o "${TODAY}_flash-sale.json"
 
 
-# Snälltåget (4 bidirectional pairs = 8 route files)
+# Snälltåget (5 bidirectional pairs = 10 route files)
 log_sna "Start snalltaget"
 cd "$BASE"
 
@@ -78,6 +78,8 @@ run "$SNA_DATA/cron.log" log_sna "berlin-stockholm"  "$SCRAPERS/snalltaget_avail
 run "$SNA_DATA/cron.log" log_sna "hamburg-stockholm" "$SCRAPERS/snalltaget_availability.py" Hamburg 740000001 --days 120 -q -o "$SNA_DATA"
 run "$SNA_DATA/cron.log" log_sna "berlin-malmoe"     "$SCRAPERS/snalltaget_availability.py" Berlin "Malmö C" --days 120 -q -o "$SNA_DATA"
 run "$SNA_DATA/cron.log" log_sna "dresden-stockholm" "$SCRAPERS/snalltaget_availability.py" Dresden 740000001 --days 120 -q -o "$SNA_DATA"
+# Austria night train (Zug 304/305, Malmö <-> Innsbruck via Hamburg, Fr, winter season to ~14.03.2027). --days 170 covers the full season.
+run "$SNA_DATA/cron.log" log_sna "malmoe-innsbruck" "$SCRAPERS/snalltaget_availability.py" "Malmö C" 810000522 --days 170 -q -o "$SNA_DATA"
 
 # RDC EuroNight (2 directions)
 log_rdc "Start rdc"

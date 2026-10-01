@@ -13,7 +13,7 @@ Endpoints: `/orientation/calendar`, `/orientation/searchjourney`, `/orientation/
 - File: `scrapers/snalltaget_availability.py`
 - CLI: `python3 snalltaget_availability.py ORIGIN DEST --days 120 -q -o DIR`
 - Each call is bidirectional (oppositedate optimization) → 2 output files
-- Routes configured in `bin/run-all.sh` (4 calls: Berlin/Hamburg/Dresden→Stockholm, Berlin→Malmö)
+- Routes configured in `bin/run-all.sh` (5 calls: Berlin/Hamburg/Dresden→Stockholm, Berlin→Malmö, Malmö→Innsbruck)
 - Filters to direct trains only (1 leg)
 - Runtime: ~4-7 min for 120 days
 
@@ -39,6 +39,7 @@ Endpoints: `/orientation/calendar`, `/orientation/searchjourney`, `/orientation/
 |-------|------|-------|
 | D 10300 | STNIGHT | Berlin/Hamburg → Stockholm (direct) |
 | D 300 | STNIGHT | Berlin/Hamburg → Malmö (night section) |
+| 304/305 | STNIGHT | Malmö → Innsbruck (via Hamburg, Zell am See; winter, Fr) |
 | 3940 | STTRAIN | Malmö → Stockholm (day train) |
 
 D 300 and D 10300 = same physical train, split at Malmö in the system.
@@ -600,3 +601,22 @@ Für preisbewusste Reisende: Semi-Flex (SPSF) bleibt länger günstig als Full-F
 ### Sitzplatzwahl (Seat Picker Workaround)
 
 Snälltågets Online-Buchung bietet keine Sitzplatzauswahl (Stand Aug 2026, laut FAQ "in Kürze verfügbar"). Da die Booking-API echte Platznummern zuweist und Bookings ohne Payment stornierbar sind, kann man gewünschte Plätze gezielt reservieren: alle ungewünschten PNRs stornieren, gewünschten PNR behalten und im Browser bezahlen.
+## Österreich-Nachtzug (Zug 304/305, Malmö <-> Innsbruck)
+
+Saisonaler Winter-Nachtzug Malmö <-> Innsbruck via Hamburg. Saison **18.12.2026 - 14.03.2027**. Hinfahrt freitags (Zug 305, 18.12.-12.03.), Rückfahrt samstags eine Woche später (Zug 304, 19.12.-13.03.). Quelle: offizielle Detailseite [snalltaget.se/tag-till-osterrike-vinter](https://www.snalltaget.se/tag-till-osterrike-vinter), API-verifiziert 01.10.2026.
+
+### Laufweg & Fahrplan (Quelle: Detailseite)
+
+Halte in Österreich: St. Johann im Pongau, Zell am See, St. Johann in Tirol, Kitzbühel, Jenbach, **Innsbruck Hbf (Endstation)**. Ab/zu mehreren Skiorten per Transferbus (Obertauern, Saalbach-Hinterglemm, Sölden, Ischgl, St. Anton u.a.).
+
+**Zug 305 (Fr, →Österreich):** Malmö C 14:55 → Hamburg Hbf 21:40 → St. Johann im Pongau 10:16 → Zell am See 10:57 → St. Johann in Tirol 11:42 → Kitzbühel 11:53 → Innsbruck Hbf 13:02.
+**Zug 304 (Sa, ←Österreich):** Innsbruck Hbf 19:00 → Kitzbühel 20:11 → St. Johann in Tirol 20:22 → Zell am See 21:06 → St. Johann im Pongau 22:47 → Hamburg Hbf 09:16 → Malmö C 15:45.
+
+Anschlüsse zum Nachtzug ab Stockholm, Södertälje, Norrköping, Linköping, Nässjö, Alvesta. **Sportlov-Direktzug ab Stockholm am 26.02.2027** (Rückfahrt ab Österreich 06.03.2027, fährt dann weiter bis Stockholm). Interrail in höheren Komfortstufen (nicht nur Sitzplatz) buchbar für Abfahrt ab Österreich 19.12.2026 und nach Österreich 12.03.2027.
+
+### API & Scraper
+
+- Endstation **Innsbruck Hbf**, EVA `810000522`. Zwischenhalt **Zell am See** EVA `810000320` liefert identische Kalenderwerte (gleicher Zug) - getrackt wird die Endstation, damit der volle Laufweg erfasst ist.
+- Standard-API, gleiche Mechanik wie die DE<->SE-Routen (`/orientation/calendar` + `/orientation/searchjourney`), kein Sonderfall wie Nordlicht.
+- Kein neuer Scraper: `snalltaget_availability.py` deckt die Route ab (`station_name` kennt innsbruck + zell-am-see bereits). In `run-all.sh` als 5. Routenpaar mit **`--days 170`** (120 verfehlt das Saisonende, ~164 Tage voraus). Output: `YYYYMMDD_malmoe-innsbruck.json` + `YYYYMMDD_innsbruck-malmoe.json`.
+- Preise (Snapshot 01.10.2026): outbound ab 1249 SEK (18.12.), Produkte SPSF/SPFF u.a.
