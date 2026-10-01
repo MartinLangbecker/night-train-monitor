@@ -67,6 +67,7 @@ run "$ES_DATA/cron.log" log_es "bruxelles-milano" "$SCRAPERS/es_availability.py"
 run "$ES_DATA/cron.log" log_es "milano-bruxelles" "$SCRAPERS/es_availability.py" milano bruxelles --days 365 -q -o "${TODAY}_milano-bruxelles.json"
 
 run "$ES_DATA/cron.log" log_es "last-minute-deals" "$SCRAPERS/es_last_minute.py" -q -o "${TODAY}_last-minute-deals.json"
+run "$ES_DATA/cron.log" log_es "flash-sale" "$SCRAPERS/es_flash_sale.py" -q -o "${TODAY}_flash-sale.json"
 
 
 # Snälltåget (4 bidirectional pairs = 8 route files)

@@ -2,19 +2,25 @@
 """
 European Sleeper Last-Minute Deals
 
-Compares last-minute deal prices (from europeansleeper.eu landing pages, scraped
-by scrapers/es_last_minute.py into *_last-minute-deals.json) against the regular
-availability prices, sorted by savings. ES-specific: only European Sleeper offers
-these last-minute landing pages, and they can be substantially cheaper than the
-regular fare — a genuine feature of the ES tariff system.
+Compares deal prices (from europeansleeper.eu landing pages) against the regular
+availability prices, sorted by savings. Two deal sources are supported:
+  - last-minute: ongoing /last-minutes-<slug> pages (scrapers/es_last_minute.py)
+  - flash:       the time-limited Flash Sale /flash-<a>-<b> pages
+                 (scrapers/es_flash_sale.py), which also covers Brussels-Milan.
+ES-specific: only European Sleeper offers these landing pages, and they can be
+substantially cheaper than the regular fare — a genuine feature of the ES tariff
+system.
 
 Data sources:
   - Regular prices: data/es/YYYYMMDD_<route>.json (raw ES snapshot)
-  - Deals:          data/es/YYYYMMDD_last-minute-deals.json (separate scraper)
+  - Last-minute:    data/es/YYYYMMDD_last-minute-deals.json
+  - Flash sale:     data/es/YYYYMMDD_flash-sale.json
 
 Usage:
-  python3 es_deals.py hamburg-paris
-  python3 es_deals.py routes            # list routes that have a deal landing page
+  python3 es_deals.py hamburg-paris                 # last-minute (default)
+  python3 es_deals.py bruxelles-milano --flash      # flash sale (Milano route)
+  python3 es_deals.py bruxelles-milano --source flash
+  python3 es_deals.py routes                        # list routes with a deal page
 """
 
 import json
@@ -40,6 +46,38 @@ ROUTE_TO_DEAL_SLUG = {
     # bruxelles-milano / milano-bruxelles: no last-minute landing page exists
 }
 
+# ES route -> flash-sale landing page slug on europeansleeper.eu.
+# The Flash Sale is a separate, time-limited campaign (scraped into
+# *_flash-sale.json by scrapers/es_flash_sale.py) and — unlike last-minute —
+# covers the Brussels-Milan route.
+ROUTE_TO_FLASH_SLUG = {
+    'hamburg-paris': 'flash-berlin-paris',
+    'paris-hamburg': 'flash-paris-berlin',
+    'bruxelles-praha': 'flash-brussels-prague',
+    'praha-bruxelles': 'flash-prague-brussels',
+    'bruxelles-milano': 'flash-brussels-milan',
+    'milano-bruxelles': 'flash-milan-brussels',
+}
+
+# Regular-availability class keys to compare a deal against, per route.
+# Most routes sell a 5-berth couchette; the Milano route uses 4-/6-berth
+# couchettes instead, so the shared deal is matched against the cheapest
+# couchette variant and the private deal against the private variant.
+DEFAULT_CLASS_MAP = {
+    'shared': 'couchette-5',
+    'private': 'couchette-5-private',
+}
+MILANO_CLASS_MAP = {
+    'shared': 'couchette-6',          # cheapest shared couchette on the Milano route
+    'private': 'couchette-6-private',
+}
+
+
+def class_map_for_route(route):
+    if route in ('bruxelles-milano', 'milano-bruxelles'):
+        return MILANO_CLASS_MAP
+    return DEFAULT_CLASS_MAP
+
 
 def load_raw_snapshot(path):
     with open(path, 'r', encoding='utf-8') as f:
@@ -59,21 +97,27 @@ def classes_to_dict(entry):
     return {c['type']: c for c in entry.get('classes', [])}
 
 
-def find_latest_deals_file():
-    """Find the most recent last-minute-deals JSON file."""
-    files = sorted(f for f in os.listdir(DATA_DIR)
-                   if f.endswith('_last-minute-deals.json'))
+def find_latest_deals_file(source='last-minute'):
+    """Find the most recent deals JSON file for a source.
+    source='last-minute' -> *_last-minute-deals.json
+    source='flash'       -> *_flash-sale.json
+    """
+    suffix = '_flash-sale.json' if source == 'flash' else '_last-minute-deals.json'
+    files = sorted(f for f in os.listdir(DATA_DIR) if f.endswith(suffix))
     return os.path.join(DATA_DIR, files[-1]) if files else None
 
 
-def load_deals_for_route(route):
-    """Load last-minute deals relevant to a route.
+def load_deals_for_route(route, source='last-minute'):
+    """Load deals relevant to a route from the given source.
     Returns ({date: {shared: price, private: price}}, deals_file)."""
-    deals_file = find_latest_deals_file()
+    deals_file = find_latest_deals_file(source)
     if not deals_file:
         return {}, None
 
-    slug = ROUTE_TO_DEAL_SLUG.get(route)
+    if source == 'flash':
+        slug = ROUTE_TO_FLASH_SLUG.get(route)
+    else:
+        slug = ROUTE_TO_DEAL_SLUG.get(route)
     if not slug:
         return {}, deals_file
 
@@ -91,7 +135,7 @@ def load_deals_for_route(route):
     return result, deals_file
 
 
-def cmd_deals(route):
+def cmd_deals(route, source='last-minute'):
     files = loaders.find_files(PROVIDER, route)
     if not files:
         print(f"No availability files found for route '{route}'")
@@ -100,16 +144,20 @@ def cmd_deals(route):
     latest_data = load_raw_snapshot(files[-1])
     snap_date = loaders.extract_date_from_filename(files[-1])
 
-    deals, deals_file = load_deals_for_route(route)
+    deals, deals_file = load_deals_for_route(route, source)
+    label = 'Flash Sale' if source == 'flash' else 'Last-Minute Deals'
     if not deals:
-        print(f"No last-minute deals found for route '{route}'")
-        slug = ROUTE_TO_DEAL_SLUG.get(route, '?')
-        print(f"  (looking for deal slug '{slug}' in latest *_last-minute-deals.json)")
+        print(f"No {label.lower()} found for route '{route}'")
+        slug = (ROUTE_TO_FLASH_SLUG if source == 'flash'
+                else ROUTE_TO_DEAL_SLUG).get(route, '?')
+        suffix = '*_flash-sale.json' if source == 'flash' else '*_last-minute-deals.json'
+        print(f"  (looking for deal slug '{slug}' in latest {suffix})")
         return
 
     deals_date = loaders.extract_date_from_filename(deals_file) if deals_file else '?'
+    cls_map = class_map_for_route(route)
 
-    print("Last-Minute Deals vs Regular Prices")
+    print(f"{label} vs Regular Prices")
     print(f"Route: {route}")
     print(f"Availability snapshot: {snap_date} | Deals snapshot: {deals_date}")
     print()
@@ -121,10 +169,10 @@ def cmd_deals(route):
         regular_private = None
         if entry:
             cd = classes_to_dict(entry)
-            couch = cd.get('couchette-5')
+            couch = cd.get(cls_map['shared'])
             if couch and couch.get('price'):
                 regular_couchette = couch['price']
-            priv = cd.get('couchette-5-private')
+            priv = cd.get(cls_map['private'])
             if priv and priv.get('price'):
                 regular_private = priv['price']
 
@@ -134,16 +182,16 @@ def cmd_deals(route):
         if deal_shared:
             saving = regular_couchette - deal_shared if regular_couchette else None
             saving_pct = (saving / regular_couchette * 100) if saving and regular_couchette else None
-            rows.append((date, 'Couchette', regular_couchette, deal_shared, saving, saving_pct))
+            rows.append((date, cls_map['shared'], regular_couchette, deal_shared, saving, saving_pct))
         if deal_private:
             saving = regular_private - deal_private if regular_private else None
             saving_pct = (saving / regular_private * 100) if saving and regular_private else None
-            rows.append((date, 'Couchette Priv', regular_private, deal_private, saving, saving_pct))
+            rows.append((date, cls_map['private'], regular_private, deal_private, saving, saving_pct))
 
     rows.sort(key=lambda r: r[5] if r[5] is not None else 0, reverse=True)
 
-    print(f"  {'Date':<12} {'Class':<16} {'Regular':>8} {'Deal':>8} {'Saving':>8} {'%':>5}")
-    print(f"  {'─'*12} {'─'*16} {'─'*8} {'─'*8} {'─'*8} {'─'*5}")
+    print(f"  {'Date':<12} {'Class':<20} {'Regular':>8} {'Deal':>8} {'Saving':>8} {'%':>5}")
+    print(f"  {'─'*12} {'─'*20} {'─'*8} {'─'*8} {'─'*8} {'─'*5}")
     for date, cls, regular, deal, saving, pct in rows:
         reg_str = f"{regular:.0f}\u20ac" if regular else "\u2014"
         deal_str = f"{deal:.0f}\u20ac"
@@ -153,21 +201,38 @@ def cmd_deals(route):
         else:
             sav_str = "\u2014"
             pct_str = "\u2014"
-        print(f"  {date:<12} {cls:<16} {reg_str:>8} {deal_str:>8} {sav_str:>8} {pct_str:>5}")
+        print(f"  {date:<12} {cls:<20} {reg_str:>8} {deal_str:>8} {sav_str:>8} {pct_str:>5}")
 
 
 def cmd_routes():
     print("ES routes with a last-minute deal landing page:\n")
     for route, slug in ROUTE_TO_DEAL_SLUG.items():
-        print(f"  {route:20s} → deal page '{slug}'")
+        print(f"  {route:20s} → last-minute page '{slug}'")
+    print("\nES routes with a flash-sale landing page:\n")
+    for route, slug in ROUTE_TO_FLASH_SLUG.items():
+        print(f"  {route:20s} → flash page '{slug}'")
 
 
 def main():
     args = sys.argv[1:]
-    if not args or args[0] == 'routes':
+    source = 'last-minute'
+    positional = []
+    i = 0
+    while i < len(args):
+        if args[i] in ('--source', '-s') and i + 1 < len(args):
+            source = args[i + 1]
+            i += 2
+        elif args[i] == '--flash':
+            source = 'flash'
+            i += 1
+        else:
+            positional.append(args[i])
+            i += 1
+
+    if not positional or positional[0] == 'routes':
         cmd_routes()
         return
-    cmd_deals(args[0])
+    cmd_deals(positional[0], source)
 
 
 if __name__ == '__main__':
