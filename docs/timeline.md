@@ -186,8 +186,31 @@ Nachtzug-Startup, eine Route: Hamburg ↔ München (via Bremen, Augsburg). Saiso
   - **Wagenmaterial / Kapazitätsdeutung** (Quelle: InnoTrans-Mock-up-Sichtung + Video + PM, NICHT aus der API): Zum Start fahren "Nox Suites" in **1:1-Anordnung**. Der gezeigte Wagen ist ein **Bpmz 294.2** (ehem. IC-2.-Klasse-Großraum) mit **9 großen Fenstern je Wagenseite**. Im Video ist eine Suite **etwa so lang wie ein Fenster breit** — pro Seite passen so **~10 Suiten**, macht **~20 Plätze/Wagen** (1:1, beide Seiten). Die beworbene 2-m-Liegefläche entsteht **diagonal** (Füße unter der Ablage der Nachbarsuite), nicht durch entsprechenden Sitzabstand. Damit: **`total=58` ≈ 3 Suite-Wagen** (58/20 ≈ 2,9), und **`total=116` ab ~14./15.04. ≈ 6 Wagen** (Verdopplung). Die genaue Suite-Sitzzahl ist nicht offiziell belegt — die Wagenzahl ist eine Ableitung aus 58/116 + Fensterzahl + 1:1-Anordnung.
   - "Nox Rooms" (private 1-/2-Personen-Zimmer) als künftiges Flaggschiff ab 2029 angekündigt — heute nur als Ausblick gezeigt, nicht buchbar.
 
+- **30.09.** Preismodell nach 8 Snapshots (23.–30.09.) — **zwei Preisachsen bestätigt:**
+  - **Kapazitätsachse (Tier-Treppe):** Basic-Preis fällt monoton mit mehr `available`; Basis 65 € (leer), Deckel beim Ausverkauf. `Flex = Basic + 50 €` gilt ausnahmslos exakt (alle Beobachtungen).
+  - **Zeit-/Vorlaufachse (neu belegt):** Bei nahezu konstanter Kapazität steigt der Preis über die Kalendertage. Belege: 23.03. (Premiere) **149 → 179 €** am 26.09. bei `available` 11→9 (−2 Plätze, +30 €); 25.03. **107 → 111 €** bei konstant 49 frei; einzelne Tage fielen leicht (28.03. 107 → 97 € bei 50→51 frei). Also kein reiner Fill-Tier wie bei ES/RDC.
+  - **Sellout-Deckel ist selbst dynamisch:** am 26.09. synchron auf beiden Premieren-Fahrten **149 → 179 €** (Basic) bzw. **199 → 229 €** (Flex) angehoben — kein fixer Deckel.
+  - **Kapazität:** Nachfrage weiter fast nur auf der Premiere — 23.03. HH→M `19 → 3` frei über 8 Tage (~95 % verkauft, `status: limited`); 24.03. stabil ~43/58; übrige Frühphasentage langsames Sickern; Sommer (`total=116`) praktisch leer.
+
 ## Offene Fragen
 
 - Wie schnell füllen sich die Saison-Anfangstage (23.–28.03.) relativ zum Rest? (Erste eigene Fill-Kurve ab Tag 1 verfügbar.)
 - Bleibt `total` bei 58 im Frühjahr und 116 ab Sommer, oder ändert sich die Konfiguration weiter?
 - Kommt eine dynamische Preiskomponente stärker durch, sobald die Auslastung steigt? (Bisher grobstufig: 50/58 → 107 €, leer → 65 €.)
+
+---
+
+# European Sleeper — Flash Sale & Routenänderung
+
+## Oktober 2026
+
+- **01.10.** "Good Morning Flash Sale" (zeitlich befristete Kampagne, **endet 06.10.2026**). Eigene Landing-Pages, getrennt von den laufenden Last-Minute-Seiten:
+  - **Festpreis:** Classic shared **49 €** p.P. one-way, Classic private **199 €** (bis 5 Personen) one-way. Ausgewählte Abfahrtstage im November/Dezember, alle Routen.
+  - 6 Richtungsseiten unter `/flash-<a>-<b>` (plus Übersicht `/flash-sale`), darunter erstmals **Brussels–Milan** (`flash-brussels-milan` / `flash-milan-brussels`) — für diese Relation gab es nie eine Last-Minute-Seite.
+  - **DOM identisch** zu den Last-Minute-Seiten (`div-tab-0`/`div-tab-1` + `<button name="price">`), daher derselbe `parse_deals()`-Parser.
+  - Erfassung: neuer `scrapers/es_flash_sale.py` (6 Flash-URLs, Kampagnen-Enddatum via `offerEnds`, **Early-Return-Guard** bei leeren/unerreichbaren Seiten → `campaignActive=false` nach Kampagnenende statt stiller Leerdatei). Zeile in `run-all.sh` nach `last-minute-deals`. Erster Lauf: 232 Deals (116 shared + 116 private), `offerEnds=2026-10-06`.
+  - Auswertung: `tools/es_deals.py` um `--flash`/`--source flash` erweitert. Milano nutzt **`couchette-4`/`couchette-6`** (nicht `couchette-5` wie die anderen Routen) — route-abhängiges Klassen-Mapping ergänzt. Beispiel Milano-Flash vs Regular: couchette-6-private 420 € → 199 € (−53 %) am 29.10.
+
+## Fahrplanwechsel (geplant)
+
+- **Ab 13.12.2026** ändert sich die Brussels–Milan-Linienführung: Halte **Antwerpen / Breda / Eindhoven** statt bisher **Liège / Verviers / Aachen**. Betrifft die getrackte Route `bruxelles-milano` / `milano-bruxelles` unabhängig vom Flash Sale (aus der Flash-Seite entnommen).
