@@ -23,10 +23,46 @@ Laufzeit: ~10-15 min (73 Connections × 2 Routen, ~600-800 Requests). Output: `d
 
 ## Routen
 
+Getrackt (`bin/run-all.sh`, 2 Calls): Hamburg ↔ Stockholm. Der Zug fährt real ab/bis
+Berlin (Lichtenberg südwärts, Gesundbrunnen nordwärts); die Hamburg-Abfrage erfasst
+denselben Zug ab Hamburg für alle Verkehrstage. Die Berlin-Teilstrecke (eigene
+Bepreisung) wird derzeit nicht separat getrackt.
+
+### Saison 01.09.–12.12.2026 (aktuell)
+
 | Route | Dep | Arr | Verkehrstage |
 |-------|-----|-----|--------------|
 | hamburg-stockholm | 5 (Hamburg) | 57 (Stockholm) | Mo + Mi + Fr |
 | stockholm-hamburg | 57 | 5 | Di + Do + Sa |
+| (Berlin-Lichtenberg → Stockholm) | 68 | 57 | Mo + Fr (Start in Berlin) |
+| (Stockholm → Berlin-Gesundbrunnen) | 57 | 67 | Do + Sa |
+
+**Maximaler Buchungshorizont (API, Stand 04.10.2026):**
+- Hamburg ↔ Stockholm: buchbar bis **15./16.01.2027**.
+- Berlin ↔ Stockholm: buchbar nur bis **11./12.12.2026** (Saisonende Berlin-Variante).
+
+Der Scraper holt alle von `ReadTrainConnections` gelieferten Connections (gesamtes
+offenes Buchungsfenster); `--days` (default 120) steuert nur das Auffüllen der
+`no service`-Marker. 120 Tage ab heute (~01.02.2027) deckt den Hamburg-Horizont ab.
+
+### Saison ab Mitte März 2027 (angekündigt, noch nicht buchbar)
+
+Laut Nachtexpress-FAQ ändern sich die Verkehrstage ab Mitte März 2027 auf **6 Tage/Woche**
+(statt 3+3) mit neuer Berlin-/Hamburg-Zuordnung:
+
+| Tag | Richtung | Südendpunkt |
+|-----|----------|-------------|
+| Mo | Stockholm → Hamburg | Hamburg |
+| Mi | Hamburg → Stockholm | Hamburg |
+| Do | Stockholm → Berlin | Berlin |
+| Fr | Berlin → Stockholm | Berlin |
+| Sa | Stockholm → Hamburg | Hamburg |
+| So | Hamburg → Stockholm | Hamburg |
+
+Berlin wird eigener Start-/Endpunkt an Do/Fr; Hamburg bedient 4 der 6 Tage. Diese
+Saison ist zum Stand 04.10.2026 noch nicht im Buchungsfenster (Horizont endet Mitte
+Januar), wird vom laufenden Scraper aber automatisch erfasst, sobald sie öffnet.
+Quelle: [nachtexpress.de/de/faq](https://www.nachtexpress.de/de/faq/).
 
 ## Datenformat (ab 26.08.2026)
 
