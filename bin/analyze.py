@@ -21,7 +21,7 @@ Modes:
 
 Options:
   --route R     Specific route (default: all EUR routes)
-  --operator O  Filter by operator (es,leo,rdc,sj,snalltaget). Comma-separated for multiple.
+  --operator O  Filter by operator (es,leo,rdc,sj,snalltaget,nox). Comma-separated for multiple.
   --date D      Specific travel date YYYY-MM-DD
   --mode M      Analysis mode (default: all)
   --all         Include past travel dates (default: future only)

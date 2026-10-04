@@ -35,7 +35,7 @@ from lib import loaders, analysis  # noqa: E402
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
-PROVIDERS = ['es', 'leo', 'snalltaget', 'rdc', 'sj']
+PROVIDERS = ['es', 'leo', 'snalltaget', 'rdc', 'sj', 'nox']
 
 
 def fmt_price(p):
