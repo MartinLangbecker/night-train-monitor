@@ -130,6 +130,11 @@ Falls API geschlossen: im Vortrag erwähnen ("war offen bis X, wurde zwischen Y 
 - Wird die Sleeper/Lady-Kopplung beibehalten oder war es ein Fehler?
 - Werden Nov/Dez-Daten mit Sleeper nachkonfiguriert?
 
+## Datenende (Oktober 2026)
+
+- **05.10.** Letzter Reisetag mit echten Preisen/Kapazitäten auf allen sechs getrackten Relationen (z.B. weimar-frankfurt Economy 18,70 €, Business 25 €).
+- **06.10.** Ab diesem Snapshot liefert die API auf allen Relationen nur noch `{"error": "Auf dieser Strecke fahren wir nicht"}` — keine `classes`, keine Preise. Der Scraper läuft weiter (Cron feuert täglich), die Datensätze sind seitdem leer. Das reale Angebotsende liegt damit beim **05.10.**, deutlich vor dem aus dem Leo-Fahrplan abgeleiteten 24.10./12.12.-Horizont.
+
 ---
 
 # Snälltåget D 10300/10301 — Beobachtungs-Timeline
