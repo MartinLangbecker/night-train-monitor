@@ -50,7 +50,7 @@ def get_all_routes():
     es_dir = get_data_dir('es')
     for f in glob.glob(os.path.join(es_dir, '*.json')):
         name = os.path.basename(f)[9:].replace('.json', '')
-        if name != 'last-minute-deals':
+        if name not in ('last-minute-deals', 'flash-sale'):
             routes.add(('es', name))
 
     # LEO routes (EUR only by default — CZK is redundant for analysis)
@@ -103,7 +103,7 @@ def get_all_routes_all_currencies():
             continue
         for f in glob.glob(os.path.join(data_dir, '*.json')):
             name = os.path.basename(f)[9:].replace('.json', '')
-            if name not in ('last-minute-deals', 'cron'):
+            if name not in ('last-minute-deals', 'flash-sale', 'cron'):
                 routes.add((provider, name))
     return sorted(routes)
 
@@ -129,7 +129,9 @@ def load_es_snapshot(filepath):
 
     result = {}
     for dt, entry in raw.items():
-        if isinstance(entry, dict) and 'error' in entry and 'classes' not in entry:
+        if not isinstance(entry, dict):
+            continue  # skip non-availability fields (e.g. flash-sale metadata)
+        if 'error' in entry and 'classes' not in entry:
             result[dt] = {ERROR_KEY: entry['error']}
             continue
         if 'classes' not in entry:
