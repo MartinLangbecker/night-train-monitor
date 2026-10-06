@@ -35,24 +35,8 @@ log_es  "=== Start run-all ==="
 log_sna "=== Start run-all ==="
 log_rdc "=== Start run-all ==="
 
-# Leo Express: Weimar–Przemyśl
-cd "$BASE"
-run "$LEO_DATA/cron.log" log_leo "weimar-przemysl CZK" "$SCRAPERS/leo_availability.py" 8010366 5100234 --days 136 -q -c CZK -o "$LEO_DATA/${TODAY}_weimar-przemysl-czk.json"
-run "$LEO_DATA/cron.log" log_leo "weimar-przemysl EUR" "$SCRAPERS/leo_availability.py" 8010366 5100234 --days 136 -q -c EUR -o "$LEO_DATA/${TODAY}_weimar-przemysl-eur.json"
-run "$LEO_DATA/cron.log" log_leo "przemysl-weimar CZK" "$SCRAPERS/leo_availability.py" 5100234 8010366 --days 136 -q -c CZK -o "$LEO_DATA/${TODAY}_przemysl-weimar-czk.json"
-run "$LEO_DATA/cron.log" log_leo "przemysl-weimar EUR" "$SCRAPERS/leo_availability.py" 5100234 8010366 --days 136 -q -c EUR -o "$LEO_DATA/${TODAY}_przemysl-weimar-eur.json"
-
-# Leo Express: Weimar–Frankfurt
-run "$LEO_DATA/cron.log" log_leo "weimar-frankfurt CZK" "$SCRAPERS/leo_availability.py" 8010366 8002041 --days 136 -q -c CZK -o "$LEO_DATA/${TODAY}_weimar-frankfurt-czk.json"
-run "$LEO_DATA/cron.log" log_leo "weimar-frankfurt EUR" "$SCRAPERS/leo_availability.py" 8010366 8002041 --days 136 -q -c EUR -o "$LEO_DATA/${TODAY}_weimar-frankfurt-eur.json"
-run "$LEO_DATA/cron.log" log_leo "frankfurt-weimar CZK" "$SCRAPERS/leo_availability.py" 8002041 8010366 --days 136 -q -c CZK -o "$LEO_DATA/${TODAY}_frankfurt-weimar-czk.json"
-run "$LEO_DATA/cron.log" log_leo "frankfurt-weimar EUR" "$SCRAPERS/leo_availability.py" 8002041 8010366 --days 136 -q -c EUR -o "$LEO_DATA/${TODAY}_frankfurt-weimar-eur.json"
-
-# Leo Express: Weimar–Bohumín
-run "$LEO_DATA/cron.log" log_leo "weimar-bohumin CZK" "$SCRAPERS/leo_availability.py" 8010366 5434124 --days 136 -q -c CZK -o "$LEO_DATA/${TODAY}_weimar-bohumin-czk.json"
-run "$LEO_DATA/cron.log" log_leo "weimar-bohumin EUR" "$SCRAPERS/leo_availability.py" 8010366 5434124 --days 136 -q -c EUR -o "$LEO_DATA/${TODAY}_weimar-bohumin-eur.json"
-run "$LEO_DATA/cron.log" log_leo "bohumin-weimar CZK" "$SCRAPERS/leo_availability.py" 5434124 8010366 --days 136 -q -c CZK -o "$LEO_DATA/${TODAY}_bohumin-weimar-czk.json"
-run "$LEO_DATA/cron.log" log_leo "bohumin-weimar EUR" "$SCRAPERS/leo_availability.py" 5434124 8010366 --days 136 -q -c EUR -o "$LEO_DATA/${TODAY}_bohumin-weimar-eur.json"
+# Leo Express: Betrieb Frankfurt–Dresden–Prag–Ostrava–Przemyśl eingestellt zum 05.10.2026 (offiziell).
+# Alle Leo-Routen aus dem Scrape entfernt; letzter Datensatz mit Preisen war der 05.10.
 
 # European Sleeper: Hamburg–Paris
 cd "$ES_DATA"
