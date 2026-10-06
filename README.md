@@ -50,6 +50,10 @@ python3 tools/es_deals.py praha-bruxelles
 # Provider-specific deep dive
 python3 tools/snalltaget_compare.py overshoot
 python3 tools/leo_currency.py
+
+# LEO same-day occupancy (sold seats per connection at 0-day lead)
+python3 tools/leo_occupancy.py
+python3 tools/leo_occupancy.py --route weimar-przemysl-eur --detail
 ```
 
 ## Analysis Modes
