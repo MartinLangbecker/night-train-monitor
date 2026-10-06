@@ -16,7 +16,7 @@ from datetime import datetime
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.dirname(SCRIPT_DIR)
-DATA_DIR = os.path.join(PROJECT_DIR, "data")
+DATA_DIR = os.path.join(PROJECT_DIR, "data", "leo")
 CHART_DIR = os.path.join(PROJECT_DIR, "charts")
 os.makedirs(CHART_DIR, exist_ok=True)
 

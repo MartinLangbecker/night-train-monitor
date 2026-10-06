@@ -9,7 +9,7 @@ from datetime import datetime
 from PIL import Image
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(PROJECT_DIR, "data")
+DATA_DIR = os.path.join(PROJECT_DIR, "data", "leo")
 CHART_DIR = os.path.join(PROJECT_DIR, "charts")
 FRAME_DIR = os.path.join(CHART_DIR, "frames")
 os.makedirs(FRAME_DIR, exist_ok=True)
